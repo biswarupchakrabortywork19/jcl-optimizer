@@ -69,17 +69,15 @@ with col1:
         "Choose JCL Sample:",
         [
             "⚠️ Select a sample to load...",
-            "🏦 Daily Annuity Processing (AIG - Financial)",
-            "🏭 Manufacturing Batch (Automotive)",
-            "✏️ Enter Custom JCL"
+            "🏦 Daily Financial Processing (Example JCL)",
+            "✏️ Enter Your Custom JCL"
         ]
     )
     
     # Sample JCL procedures
     samples = {
-        "🏦 Daily Annuity Processing (AIG - Financial)": """//DAILYPRC JOB (ACCT),'DAILY ANNUITY PROCESS',CLASS=A,MSGCLASS=X
+        "🏦 Daily Financial Processing (Example JCL)": """//DAILYPRC JOB (ACCT),'DAILY ANNUITY PROCESS',CLASS=A,MSGCLASS=X
 //********************************************************************
-//* DAILY ANNUITY PROCESSING - AIG USA
 //* BASELINE: 6 HOUR BATCH WINDOW (BEFORE OPTIMIZATION)
 //* PROCESSES: Premium calculations, Policy validations, Reports
 //********************************************************************
@@ -115,57 +113,13 @@ with col1:
 //SUMMARY  DD DSN=DAILY.SUMMARY.REPORT,DISP=(NEW,CATLG),
 //            SPACE=(CYL,(5,2)),UNIT=SYSDA""",
         
-        "🏭 Manufacturing Batch (Automotive)": """//MFGBATCH JOB (MFG),'MANUFACTURING DAILY',CLASS=A,MSGCLASS=X
-//********************************************************************
-//* DAILY MANUFACTURING BATCH - AUTOMOTIVE
-//* PROCESSES: Parts inventory, Quality checks, Defect tracking
-//********************************************************************
-//STEP01   EXEC PGM=SORT,REGION=8M
-//SORTIN   DD DSN=MFG.PARTS.DAILY,DISP=SHR
-//SORTOUT  DD DSN=&&SORTED1,DISP=(NEW,PASS),
-//            SPACE=(CYL,(15,5)),UNIT=SYSDA
-//SYSIN    DD *
-  SORT FIELDS=(1,8,CH,A)
-/*
-//*
-//STEP02   EXEC PGM=SORT,REGION=8M
-//SORTIN   DD DSN=MFG.QUALITY.DAILY,DISP=SHR
-//SORTOUT  DD DSN=&&SORTED2,DISP=(NEW,PASS),
-//            SPACE=(CYL,(15,5)),UNIT=SYSDA
-//SYSIN    DD *
-  SORT FIELDS=(1,8,CH,A)
-/*
-//*
-//STEP03   EXEC PGM=QCCHECK,REGION=8M,COND=(0,NE,STEP01)
-//INPUT    DD DSN=&&SORTED1,DISP=(OLD,DELETE)
-//OUTPUT   DD DSN=&&QCPASS,DISP=(NEW,PASS),
-//            SPACE=(CYL,(10,5)),UNIT=SYSDA
-//FAILED   DD DSN=QC.FAILED.PARTS,DISP=(NEW,CATLG),
-//            SPACE=(CYL,(5,2)),UNIT=SYSDA
-//*
-//STEP04   EXEC PGM=DEFECT,REGION=8M,COND=(0,NE,STEP02)
-//INPUT    DD DSN=&&SORTED2,DISP=(OLD,DELETE)
-//OUTPUT   DD DSN=&&DEFECTS,DISP=(NEW,PASS),
-//            SPACE=(CYL,(10,5)),UNIT=SYSDA
-//*
-//STEP05   EXEC PGM=INVUPD,REGION=8M,COND=(0,NE,STEP03)
-//QCPASS   DD DSN=&&QCPASS,DISP=(OLD,DELETE)
-//INVENTORY DD DSN=MFG.MASTER.INVENTORY,DISP=SHR
-//OUTPUT   DD DSN=MFG.INVENTORY.UPDATED,DISP=(NEW,CATLG),
-//            SPACE=(CYL,(20,10)),UNIT=SYSDA
-//*
-//STEP06   EXEC PGM=RPTGEN,REGION=8M,COND=(0,NE,STEP04)
-//DEFECTS  DD DSN=&&DEFECTS,DISP=(OLD,DELETE)
-//REPORT   DD SYSOUT=*
-//SUMMARY  DD DSN=MFG.DAILY.SUMMARY,DISP=(NEW,CATLG),
-//            SPACE=(CYL,(5,2)),UNIT=SYSDA"""
     }
     
     # Set default text based on selection
     if sample_option == "⚠️ Select a sample to load...":
         default_jcl = "// Select a sample from the dropdown above or choose 'Enter Custom JCL'"
         jcl_disabled = True
-    elif sample_option == "✏️ Enter Custom JCL":
+    elif sample_option == "Enter Custom JCL ✏️":
         default_jcl = "// Paste your JCL here..."
         jcl_disabled = False
     else:
@@ -185,16 +139,23 @@ with col2:
     
     # Info box
     st.info("""
-    👨‍💻 **About the Analysis:**
+     **About this tool: 👨‍💻**
     
-    This tool uses Google's Gemini AI (free) to analyze JCL procedures the same way I manually optimized batch jobs at AIG—but in seconds instead of weeks.
+    The JCL Optimization Analyzer performs static analysis of z/OS batch JCL to detect common performance anti-patterns such as excessive intermediate datasets, redundant SORT and COPY steps, inefficient resource allocations, and unnecessary serial dependencies.
+
+    Rather than relying on runtime metrics, the tool focuses on structural and semantic analysis of JCL flows and provides evidence-based recommendations that align with how experienced mainframe performance engineers review batch jobs.
     
-    **At AIG, I achieved:**
-    - 40% batch window reduction (6hrs → 3.6hrs)
-    - Through parallelization and resource tuning
-    - Took weeks of manual analysis
-    
-    **This tool automates that process.**
+    **What problems does it solve?
+
+1) Identifies unnecessary intermediate datasets that cause excessive disk I/O
+
+2) Detects redundant SORT and COPY steps
+
+3) Highlights job step consolidation opportunities using DFSORT/ICETOOL
+
+4) Distinguishes between intra-job limitations and scheduler-level parallelization
+
+Flags resource over-allocation (REGION, buffers) without unsafe assumptions**
     """)
     
     if st.button("🚀 Analyze & Optimize", type="primary", use_container_width=True):
