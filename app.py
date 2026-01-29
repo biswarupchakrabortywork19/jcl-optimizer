@@ -43,14 +43,20 @@ with st.sidebar:
     # API Key input
     st.markdown("---")
     st.markdown("### ⚙️ Configuration")
+ # Trying to get API key from secrets first (for deployed version)
+try:
+    api_key = st.secrets["GOOGLE_API_KEY"]
+    st.success("✅ API Key configured (from StreamLit)")
+except:
+    # If not in secrets, ask user to input
     api_key = st.text_input(
         "Google Gemini API Key",
         type="password",
-        help="Get free key from: https://makersuite.google.com/app/apikey"
+        #help="Get free key from: https://makersuite.google.com/app/apikey"
     )
     
     if api_key:
-        st.success("✅ API Key configured")
+        st.success("API Key configured ✅")
 
 # Main content area
 col1, col2 = st.columns([1, 1])
