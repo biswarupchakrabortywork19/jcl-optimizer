@@ -10,7 +10,7 @@ st.set_page_config(
 
 # Title and description
 st.title("🚀 JCL Optimization Analyzer")
-st.markdown("**AI-Powered Mainframe Batch Performance Optimization**")
+st.markdown("**AI Powered Mainframe Batch Performance Optimization**")
 st.markdown("*Built by Biswarup Chakraborty - Proof of Concept*")
 st.markdown("---")
 
@@ -18,7 +18,7 @@ st.markdown("---")
 with st.sidebar:
     st.markdown("### About This Tool")
     st.markdown("""
-    This analyzer uses Google Gemini AI to identify optimization opportunities in JCL procedures:
+    This analyzer can be used to identify optimization opportunities in JCL procedures:
     
     ✅ Parallelization opportunities  
     ✅ Resource optimization  
@@ -30,11 +30,10 @@ with st.sidebar:
     st.markdown("### Sample Use Cases")
     st.markdown("""
     **Financial Services:**
-    - Daily annuity processing (AIG experience)
     - End-of-day settlement
     - Regulatory reporting
     
-    **Automotive:**
+    **Manufacturing Industry:**
     - Manufacturing batch jobs
     - Supply chain processing
     - Quality control reporting
@@ -46,7 +45,7 @@ with st.sidebar:
  # Trying to get API key from secrets first (for deployed version)
 try:
     api_key = st.secrets["GOOGLE_API_KEY"]
-    st.success("✅ API Key configured (from StreamLit)")
+    st.success("✅ API Key configured (from StreamLit) using Biswarup's account")
 except:
     # If not in secrets, ask user to input
     api_key = st.text_input(
@@ -171,7 +170,7 @@ with col2:
         elif not jcl_input.strip() or "Select a sample" in jcl_input:
             st.error("⚠️ Please select a JCL sample from the dropdown above")
         else:
-            with st.spinner("🤖 Google Gemini AI is analyzing your JCL... (15-30 seconds)"):
+            with st.spinner("Analyzing your JCL..(15-30 seconds), until then sit back and relax"):
                 try:
                     # Configure Gemini
                     genai.configure(api_key=api_key)
@@ -396,7 +395,7 @@ Total: 3 hours
                     st.download_button(
                         label="📥 Download Full Optimization Report",
                         data=analysis_text,
-                        file_name="jcl_optimization_report.md",
+                        file_name="jcl_optimization_report.pdf",
                         mime="text/markdown",
                         use_container_width=True,
                         type="primary"
@@ -420,11 +419,6 @@ st.markdown("""
 <div style='text-align: center; color: #666; padding: 20px;'>
     <p style='font-size: 18px; font-weight: bold; margin-bottom: 10px;'>🚀 JCL Optimization Analyzer</p>
     <p style='margin: 5px 0;'>Proof of Concept - Built by <strong>Biswarup Chakraborty</strong></p>
-    <p style='margin: 5px 0;'>For <strong>Living Mainframe</strong> Professional Consultant Interview</p>
-    <p style='margin: 5px 0; font-size: 14px;'>Technologies: Python • Streamlit • Google Gemini AI (Free Tier)</p>
-    <p style='margin-top: 15px; font-size: 12px; color: #999;'>
-        Based on real experience optimizing mainframe batch jobs at AIG USA<br>
-        Achieved 40% reduction in batch window (6 hours → 3.6 hours)
-    </p>
+    <p style='margin: 5px 0; font-size: 14px;'>Technologies: Python • Streamlit • Google API (Free Tier)</p>
 </div>
 """, unsafe_allow_html=True)
