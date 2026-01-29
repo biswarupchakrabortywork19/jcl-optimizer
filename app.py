@@ -141,25 +141,26 @@ with col2:
     st.info("""
      **About this tool: 👨‍💻**
     
-    **The JCL Optimization Analyzer performs static analysis of z/OS batch JCL**
-    **to detect common performance anti-patterns such as excessive intermediate**
-    **datasets, redundant SORT and COPY steps, inefficient resource allocations,** 
-    **and unnecessary serial dependencies.**
+    The JCL Optimization Analyzer performs static 
+    analysis of z/OS batch JCL to detect common 
+    performance anti-patterns such as excessive intermediate
+    datasets, redundant SORT and COPY steps, inefficient 
+    resource allocations and unnecessary serial dependencies.
 
-    **Rather than relying on runtime metrics, the tool focuses on structural and**
-    **semantic analysis of JCL flows and provides evidence-based recommendations** 
-    **that align with how experienced mainframe performance engineers review batch jobs.**
+    Rather than relying on runtime metrics, the tool focuses 
+    on structural and semantic analysis of JCL flows and provides 
+    evidence-based recommendations that align with how experienced 
+    mainframe performance engineers review batch jobs.
     
-    **What problems does it solve?**
+    What problems does it solve?
 
-**1) Identifies unnecessary intermediate datasets that cause excessive disk I/O**
+    1) Identifies unnecessary intermediate datasets that cause excessive disk I/O
 
-**2) Detects redundant SORT and COPY steps**
+    2) Detects redundant SORT and COPY steps
 
-**3) Highlights job step consolidation opportunities using DFSORT/ICETOOL**
+    3) Highlights job step consolidation opportunities using DFSORT/ICETOOL
 
-**4) Distinguishes between intra-job limitations and scheduler-level parallelization**
-
+    4) Distinguishes between intra-job limitations and scheduler-level parallelization
 
     """)
     
