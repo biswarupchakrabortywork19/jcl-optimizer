@@ -118,7 +118,7 @@ with col1:
     if sample_option == "⚠️ Select a sample to load...":
         default_jcl = "// Select a sample from the dropdown above or choose 'Enter Custom JCL'"
         jcl_disabled = True
-    elif sample_option == "Enter Custom JCL ✏️":
+    elif sample_option == "✏️ Enter Your Custom JCL":
         default_jcl = "// Paste your JCL here..."
         jcl_disabled = False
     else:
@@ -398,8 +398,7 @@ Total: 3 hours
                         file_name="jcl_optimization_report.pdf",
                         mime="text/markdown",
                         use_container_width=True,
-                        type="primary"
-                    )
+                        type="primary")
                     
                     st.success("✅ Analysis complete! Review recommendations above and download the full report.")
                     
